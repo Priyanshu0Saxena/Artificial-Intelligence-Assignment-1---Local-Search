@@ -11,6 +11,31 @@ struct State{
     State(int n): helicopterVillage(n){};
 };
 
+double calculateTourDistance(int hid, const vector<int>& villages, ProblemData& problem)
+{
+    if(villages.size()==0)
+    return 0.0;
+
+    const auto& helicopter = problem.helicopters[hid];
+    Point home = problem.cities[helicopter.home_city_id - 1];
+    Point curr = home;
+    double totalDistance = 0.0;
+
+    for(int vill: villages)
+    {
+        Point des = problem.villages[vill].coords;
+        totalDistance += distance(curr, des);
+        curr = des;
+    }
+    totalDistance += distance(curr, home);
+    return totalDistance;
+}
+double calculateVillageValue(int village_id, int dry_food, int perishable_food, int other_supplies, double current_food_delivered, double current_other_delivered)
+{
+
+}
+
+
 double calculateObjectiveValue(const Solution& solution, ProblemData& problem)
 {
     double totalValue, totalCost;
