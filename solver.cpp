@@ -126,6 +126,64 @@ State Random_State(const ProblemData& problem){
     return state;
 }
 
+State neighbor(State state)
+{
+    int source = -1;
+    int destination = -1;
+    int h = state.helicopterVillage.size();
+    if (h <= 1)
+    {
+        return state;
+    }
+    int limit;
+    random_device rd;
+    mt19937 rng(rd());
+    int choice = uniform_int_distribution<int>(1, 3)(rng);
+    uniform_int_distribution<int> dist(0, h - 1);
+    source=dist(rng);
+    destination=dist(rng);
+    switch (choice)
+    {
+    case 1:
+        cout<<"Case 1"<<endl;
+        while (source == destination)
+        {
+            source = dist(rng);
+            destination = dist(rng);
+        }
+        swap(state.helicopterVillage[source], state.helicopterVillage[destination]);
+        break;
+    case 2:
+        cout<<"case 2 "<<endl;
+        limit=100;
+        while(state.helicopterVillage[source].size()<=1 && limit){
+            source=dist(rng);
+            limit--;
+        }
+        if(state.helicopterVillage[source].size()>1)
+        shuffle(state.helicopterVillage[source].begin(),state.helicopterVillage[source].end(),rng);
+        break;
+    case 3:
+    cout<<"case 3"<<endl;
+    limit =h+10;
+        while((state.helicopterVillage[source].size()==0 || source==destination) && limit){
+            source=dist(rng);
+            destination=dist(rng);
+            limit--;
+        }
+        if(state.helicopterVillage[source].size()==0){
+            return state;
+        }
+        int randomvillag;
+        uniform_int_distribution<int> dist1(0,state.helicopterVillage[source].size()-1);
+        randomvillag=dist1(rng);
+        state.helicopterVillage[destination].push_back(state.helicopterVillage[source][randomvillag]);
+        state.helicopterVillage[source].erase(state.helicopterVillage[source].begin()+randomvillag);
+        break;
+    }
+    return state; 
+}
+
 Solution solve(const ProblemData& problem) {
     cout << "Starting solver..." << endl;
 
