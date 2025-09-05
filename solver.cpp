@@ -5,7 +5,7 @@
 using namespace std;
 
 struct State{
-    vector<vector<Point>> helicopterVillage;
+    vector<vector<int>> helicopterVillage;
     State(){}
     State(int n): helicopterVillage(n){};
 };
