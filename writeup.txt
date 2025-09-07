@@ -1,0 +1,8 @@
+Even though we have taken help from the following students and LLMs in terms of discussing ideas and coding practices, all our code is written by us.
+
+Student we discussed with: Nayan Rabadiya 2025MCS2108
+LLMs: chatGPT (for debugging)
+
+Libraries Used:
+random : For generating random integer between a given range
+algorithm: For using shuffle() which shuffles integers in a vector randomly
