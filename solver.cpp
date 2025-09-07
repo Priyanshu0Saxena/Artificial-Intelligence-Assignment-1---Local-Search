@@ -12,8 +12,6 @@ struct State
 
 State randomState(const ProblemData& problem)
 {
-    random_device rd;
-    mt19937 rng(rd());
     int H = problem.helicopters.size();
     int V = problem.villages.size();
     State state(H);
@@ -27,47 +25,46 @@ State randomState(const ProblemData& problem)
 
 State getNeighbour(State state)
 {
-    int h = state.helicopterVillage.size();
-    if (h <= 1) return state;
+    int H = state.helicopterVillage.size();
+    if (H <= 1) return state;
     random_device rd;
     mt19937 rng(rd());
-    int choice = uniform_int_distribution<int>(1, 3)(rng);
-    uniform_int_distribution<int> dist(0, h - 1);
-    int src = dist(rng);
-    int dest = dist(rng);
+    int choice = rand()%H;
+    int src = rand()%H;
+    int dest = rand()%H;
     int limit;
     switch (choice)
     {
-        case 1:
+        case 0:
             while (src == dest)
             {
-                src = dist(rng);
-                dest = dist(rng);
+                src  = rand()%H;
+                dest  = rand()%H;
             }
             swap(state.helicopterVillage[src], state.helicopterVillage[dest]);
             break;
-        case 2:
+        case 1:
             limit = 100;
             while (state.helicopterVillage[src].size() <= 1 && limit)
             {
-                src = dist(rng);
+                src  = rand()%H;
                 limit--;
             }
             if (state.helicopterVillage[src].size() > 1)
                 shuffle(state.helicopterVillage[src].begin(), state.helicopterVillage[src].end(), rng);
             break;
-        case 3:
+        case 2:
         {
-            limit = h + 10;
+            limit = H + 10;
             while ((state.helicopterVillage[src].size() == 0 || src == dest) && limit)
             {
-                src = dist(rng);
-                dest = dist(rng);
+                src  = rand()%H;
+                dest  = rand()%H;
                 limit--;
             }
             if (state.helicopterVillage[src].size() == 0) return state;
             uniform_int_distribution<int> dist1(0, state.helicopterVillage[src].size() - 1);
-            int randomVillage = dist1(rng);
+            int randomVillage  = rand()%H;
             state.helicopterVillage[dest].push_back(state.helicopterVillage[src][randomVillage]);
             state.helicopterVillage[src].erase(state.helicopterVillage[src].begin() + randomVillage);
             break;
@@ -79,9 +76,7 @@ State getNeighbour(State state)
 int pickup(double dryOther, double wcap)
 {
     int dryOtherCount = wcap / dryOther;
-    random_device rd;
-    mt19937 rng(rd());
-    return uniform_int_distribution<int>(0, dryOtherCount)(rng);
+    return rand()%(dryOtherCount+1);
 }
 
 double getTripDistance(int hid, const vector<int>& villages, ProblemData& problem)
